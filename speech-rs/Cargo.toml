@@ -1,0 +1,10 @@
+[package]
+name = "speech-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ort = "=2.0.0-rc.12"
+wavers = { version="1.5.1", features=["ndarray"] }
+ndarray = { version="0.16.1", default-features = false, features=["serde"] }
+rubato = "1.0.1"
