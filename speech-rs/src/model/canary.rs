@@ -31,6 +31,21 @@ impl CanaryModel {
         let keys: Vec<&str> = outputs.keys().collect();
         println!("ENCODER OUTPUTS HAS keys {:?}", keys);
         // println!("ENCODER OUTPUTS HAS values {:?}", outputs.values());
+
+        // https://www.mdpi.com/2076-3417/14/24/11583
+
+        // https://docs.rs/knf-rs/0.3.2/knf_rs/fn.compute_fbank.html
+
+        // https://www.kaggle.com/code/ahmedabdoamin/preprocessing-speech-mfcc-vs-filter-banks
+
+        // https://apxml.com/courses?page=3&level=3
+
+        // https://github.com/Blaizzy/mlx-audio/blob/main/mlx_audio/stt/models/canary/canary.py
+
+        // https://github.com/NVIDIA-NeMo/NeMo/tree/main/nemo/collections/asr/parts
+
+
+        // https://github.com/NVIDIA-NeMo/NeMo/blob/main/nemo/collections/audio/data/audio_to_audio.py#L592
     }
 }
 
