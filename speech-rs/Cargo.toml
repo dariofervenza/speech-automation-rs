@@ -4,12 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-ort = "=2.0.0-rc.12"
+ort = "=2.0.0-rc.10"
 wavers = { version="1.5.1", features=["ndarray"] }
 ndarray = { version="0.16.1", default-features = false, features=["serde"] }
-rubato = "1.0.1"
-audioadapter = "2.0.0"
-audioadapter-sample = "2.0.0"
-audioadapter-buffers = "2.0.0"
+rubato = "2.0.0"
+audioadapter = "3.0.0"
+audioadapter-sample = "3.0.0"
+audioadapter-buffers = "3.0.0"
 audiochannelutils = "0.0.4"
 aubio = "0.2.1"
+kaldi-native-fbank = "0.1.0"

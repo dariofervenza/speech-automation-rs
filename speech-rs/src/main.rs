@@ -1,14 +1,14 @@
 mod model;
 mod audio;
 use model::load::load_model;
-use audio::load::load_audio_file;
-use ndarray::s;
+use audio::load::AudioLoader;
 
 fn main() {
-    let mut model = load_model().expect("error loading model");
+    let debug = false;
+    let mut model = load_model(debug).expect("error loading model");
     let path = "/home/dario/speech-automation-rs/harvard.wav";
-    let audio_arr = load_audio_file(path);
-    println!("First elements:\n{:?}", &audio_arr[..10]);
-    model.encode(audio_arr);
+    let loaded_audio = AudioLoader::from_path(path, debug);
+    println!("First elements:\n{:?}", &loaded_audio.to_vec()[..10]);
+    model.pipe(loaded_audio.to_vec(), debug);
 
 }
