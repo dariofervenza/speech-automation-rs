@@ -1,0 +1,61 @@
+[audio_wav]
+    [audio_wav.resample]
+        chunk_size = 1024
+        sub_chunks = 2
+        nbr_channels = 2
+
+    [[audio_wav.testfiles]]
+        original_file = "/home/dario/speech-automation-rs/test_spanish.wav"
+        resampled_file = "/home/dario/speech-automation-rs/test_spanish_resampled.wav"
+        mono_file = "/home/dario/speech-automation-rs/test_spanish_mono.wav"
+        save_resampled = true
+        save_mono = true
+        source_lang = "<|es|>"
+        target_lang = "<|es|>"
+        # context = 
+
+    
+    [[audio_wav.testfiles]]
+        original_file = "/home/dario/speech-automation-rs/harvard.wav"
+        resampled_file = "/home/dario/speech-automation-rs/harvard_resampled.wav"
+        mono_file = "/home/dario/speech-automation-rs/harvard_mono.wav"
+        save_resampled = true
+        save_mono = true
+        source_lang = "<|en|>"
+        target_lang = "<|en|>"
+
+[models]
+    [models.canary]
+        resampling_frequency = 16000.0
+        max_tokens = 250
+        log_every_steps = 15
+        # use 99999 has lang placeholder while there is no tokenizer
+        # init_prompt = [16053, 7, 4, 16, 64, 64, 5, 9, 11, 13]
+        # init_prompt = [5, 65, 65, 17, 6, 10, 14, 12]
+        init_prompt = [16053, 7, 4, 16, 64, 64, 5, 9, 11, 13]
+        [models.canary.model_path]
+            encoder = "/home/dario/speech-automation-rs/model/encoder-model.onnx"
+            decoder = "/home/dario/speech-automation-rs/model/decoder-model.onnx"
+        [models.canary.init_decoder_mems]
+            layers = 10
+            batch = 1
+            mems_len = 0
+            hidden_size = 1024
+        [models.canary.fbank_cfg]
+            num_mel_features = 128
+            dither = 1.0e-5
+            frame_shift_ms = 10.0
+            frame_length_ms = 25.0
+            window_type = "hanning"
+            round_to_power_of_two = true
+            snip_edges = true
+            preemph_coeff = 0.97
+            use_energy = false
+            raw_energy = false
+            use_log_fbank = false
+
+
+[logging]
+    level = "info"
+    logs_folder = "logs/"
+    _remove_after = "5d"

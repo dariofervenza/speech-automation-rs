@@ -7,6 +7,7 @@ edition = "2024"
 ort = "=2.0.0-rc.10"
 wavers = { version="1.5.1", features=["ndarray"] }
 ndarray = { version="0.16.1", default-features = false, features=["serde"] }
+serde = { version="1.0.228", features=["derive"] }
 rubato = "2.0.0"
 audioadapter = "3.0.0"
 audioadapter-sample = "3.0.0"
@@ -14,3 +15,8 @@ audioadapter-buffers = "3.0.0"
 audiochannelutils = "0.0.4"
 aubio = "0.2.1"
 kaldi-native-fbank = "0.1.0"
+toml = "1.1.2"
+fern = "0.7"
+log = "0.4"
+humantime = "2.3"
+ndarray-stats = "0.6.0"

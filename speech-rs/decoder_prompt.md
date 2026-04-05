@@ -12,8 +12,11 @@ print(asr_ast_model.tokenizer.tokenizer)
 
 - Get the tokenizer map
 
+print(list(asr_ast_model.tokenizer.tokenizer.get_vocab().items())[:1000])
 print(asr_ast_model.tokenizer.tokenizer.get_vocab())
 
+with open("tokenizer_export.json", "w", encoding="utf-8") as f:
+    json.dump(asr_ast_model.tokenizer.tokenizer.get_vocab(), f)
 
 - Which prompt are using?
 
@@ -30,13 +33,19 @@ turns = [
         "slots": {
             "source_lang": "en",
             "target_lang": "en",
-            "decodercontext": "",
+            "decodercontext": "Please transcribe this audio file in english",
             "emotion": "<|emo:undefined|>",
             "pnc": "yes",
             "itn": "no",
             "timestamp": "no",
             "diarize": "no",
         },
+    },
+    {
+        "role": "user_partial,
+        "slots": {
+            "decodercontext": "Please go ahead with the transcription
+        }
     }
 ]
 encoded = pf.encode_dialog(turns)
