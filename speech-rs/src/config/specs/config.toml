@@ -32,7 +32,7 @@
         # use 99999 has lang placeholder while there is no tokenizer
         # init_prompt = [16053, 7, 4, 16, 64, 64, 5, 9, 11, 13]
         # init_prompt = [5, 65, 65, 17, 6, 10, 14, 12]
-        init_prompt = [16053, 7, 4, 16, 64, 64, 5, 9, 11, 13]
+        init_prompt = [16053, 7, 4, 16, 99999, 99999, 5, 9, 11, 13]
         [models.canary.model_path]
             encoder = "/home/dario/speech-automation-rs/model/encoder-model.onnx"
             decoder = "/home/dario/speech-automation-rs/model/decoder-model.onnx"

@@ -18,10 +18,10 @@ fn init_tokens(model_cfg: &Canary, audio: &AudioFile, tokenizer: &Tokenizer) -> 
     let mut vec_init: Vec<i64> = model_cfg.init_prompt.clone();
     let from_lang = tokenizer.tokenize(&audio.source_lang);
     let to_lang = tokenizer.tokenize(&audio.target_lang);
-    vec_init[3] = from_lang as i64;
-    vec_init[4] = to_lang as i64;
+    vec_init[4] = from_lang as i64;
+    vec_init[5] = to_lang as i64;
     let array_init = ArrayD::from_shape_vec(
-        vec![1, vec_init.len()], vec_init
+        vec![1, vec_init.len()], vec_init.to_vec()
     ).expect("Error creating array init");
     array_init
 }
