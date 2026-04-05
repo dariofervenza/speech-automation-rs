@@ -68,7 +68,7 @@ impl CanaryModel {
     }
 
     pub fn pipe(&mut self, input_vec: Vec<f32>, model_cfg: &Canary, audio: &AudioFile) {
-        for i in 0..1 {
+        for i in 0..15 {
             info!("Pass no: {}", i);
             let encoder_out = self.encode(input_vec.clone(), model_cfg);
             self.decode(encoder_out, model_cfg, audio);

@@ -4,12 +4,13 @@ mod config;
 use model::load::load_model;
 use audio::load::AudioLoader;
 use config::types::GlobalConfig;
-use log::debug;
+use log::{ debug };
 
 fn main() {
+    // LD_LIBRARY_PATH=/home/dario/dario/Downloads/Rust/speech-automation-rs/speech-rs/onnxruntime-linux-x64-gpu-1.22.0/lib cargo run
     let app_cfg = GlobalConfig::from_file("src/config/specs/config.toml");
     app_cfg.set_log_level();
-    let mut model = load_model(&app_cfg).expect("error loading model");
+    let mut model = load_model(&app_cfg).expect("error loading model"); 
     let test_audio_file = &app_cfg.audio_wav.testfiles
         .first()
         .expect("No AUDIO FILE PROVIDED");
