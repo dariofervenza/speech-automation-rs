@@ -3,7 +3,7 @@ use crate::model::tensor::TensorProcessor;
 use ort::session::{ SessionOutputs };
 use ort::value::{ TensorValueType, Value };
 use ndarray::{ ArrayD };
-use log::{ info };
+use log::{ info, debug };
 
 
 pub struct EncoderOutput {
@@ -17,8 +17,8 @@ impl EncoderOutput {
     pub fn new(out: SessionOutputs<'_>) -> Self {
         let embeddings = Self::try_tensor::<f32>(&out, "encoder_embeddings");
         let mask = Self::try_tensor::<i64>(&out, "encoder_mask");
-        info!("Embeddings shape: {:?}", embeddings.shape());
-        info!("Mask shape: {:?}", mask.shape());
+        debug!("Embeddings shape: {:?}", embeddings.shape());
+        debug!("Mask shape: {:?}", mask.shape());
         EncoderOutput {
             embeddings, 
             mask,

@@ -27,11 +27,11 @@ pub fn load_model(app_cfg: &GlobalConfig) -> Result<CanaryModel, Error> {
     //    Some(cuda),
     //    Some(cdnn),
     //).expect("error preloading cuda libs");
-    //info!("Load libs res: {:?}", res);
+    //debug!("Load libs res: {:?}", res);
     let init = ort::init()
         .commit()?;
     let exec_prov = CUDAExecutionProvider::default().with_device_id(0);
-    info!("IS CUDA AVAILABLE: {:?}", exec_prov.is_available());
+    debug!("IS CUDA AVAILABLE: {:?}", exec_prov.is_available());
     debug!("Cuda execution {}", init);
     // let encoder_model_path = var("ONNX_ENCODER_PATH").expect("Error loading encoder path");
     // let decoder_model_path = var("ONNX_DECODER_PATH").expect("Error loading decoder path");

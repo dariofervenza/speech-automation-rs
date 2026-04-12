@@ -1,5 +1,5 @@
 pub mod load;
-mod canary;
+pub mod canary;
 mod fbank;
 mod encoder;
 mod decoder;

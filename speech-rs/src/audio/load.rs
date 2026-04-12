@@ -25,6 +25,23 @@ impl AudioLoader {
         self.mono_audio.clone()
     }
 
+    pub fn from_samples(samples: Vec<f32>, sample_rate: u32, app_cfg: &GlobalConfig)  -> Self {
+        let resample_cfg = &app_cfg.audio_wav.resample;
+        let audio_cfg = &app_cfg.models.canary;
+        let resample_freq = audio_cfg.resampling_frequency as usize;
+        let resampled = Self::resample_audio_vec(
+            &samples,
+            sample_rate as usize,
+            resample_freq,
+            resample_cfg
+        );
+        let stereos = interleaved_samples_to_stereos(&resampled).expect("error converting to stereos");
+        let mono_audio = stereos_to_mono_channel(&stereos);
+        AudioLoader {
+            mono_audio
+        }
+    }
+
     fn resample_audio_vec(
         input_data: &Vec<f32>,
         input_rate: usize,
@@ -65,14 +82,14 @@ impl AudioLoader {
         ).expect("Error loading audio file");
         let wav_spec = wav.wav_spec();
         let sample_rate: usize = wav.sample_rate() as usize;
-        info!("Wav spec: {:?}", wav_spec);
-        info!("Original sample rate: {}", sample_rate);
+        debug!("Wav spec: {:?}", wav_spec);
+        debug!("Original sample rate: {}", sample_rate);
         let samples = wav.read().expect("error getting samples"); 
         let audio_vec = samples.to_vec();
         let (array_f32, _): (Array2<f32>, i32) = wav.as_ndarray().unwrap();
         // interleaved as vector
-        info!("Interleaved Vec has len {}", audio_vec.len());
-        info!("Original wav shape: {:?}", array_f32.shape());
+        debug!("Interleaved Vec has len {}", audio_vec.len());
+        debug!("Original wav shape: {:?}", array_f32.shape());
         // Array shape: [809508, 2]
         debug!("First elements array channel 1 {:?}", array_f32.slice(s![..10, 0]));
         debug!("First elements array channel 2 {:?}", array_f32.slice(s![..10, 1]));
@@ -98,7 +115,7 @@ impl AudioLoader {
         let stereos = interleaved_samples_to_stereos(&out).expect("error converting to stereos");
         let mono = stereos_to_mono_channel(&stereos);
         debug!("First elements of mono audio: {:?}", &mono[0..30]);
-        info!("Mono is {:?}", mono.len());
+        debug!("Mono is {:?}", mono.len());
         if audio_file.save_mono {
             let samples_mono: Samples<f32> = Samples::from(mono.clone());
             let out_path = &Path::new(audio_file.mono_file.as_str());

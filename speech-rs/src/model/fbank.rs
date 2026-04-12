@@ -51,13 +51,13 @@ pub trait FbankProcessor {
         let fbank = Array2::from_shape_vec(
             (actual_num_frames, num_bins), all_features
         ).expect("Error creating array2 fbank");
-        info!("INITITAL fbank shape is: {:?}", fbank.shape());
+        debug!("INITITAL fbank shape is: {:?}", fbank.shape());
         Self::normalize(fbank)
     }
 
     fn normalize(fbank: Array2<f32>) -> Array2<f32> {
         // apply before permutting
-        info!("Normalize original {:?}", fbank.slice(s![0, 0..15]));
+        debug!("Normalize original {:?}", fbank.slice(s![0, 0..15]));
         let mean_axis = fbank
             .mean_axis(Axis(0))
             .expect("Error computing mean fbank")
@@ -65,11 +65,11 @@ pub trait FbankProcessor {
         let std_axis = fbank
             .std_axis(Axis(0), 1 as f32)
             .insert_axis(Axis(0));
-        info!("Normalize org shape: {:?}", fbank.shape());
-        info!("Normalize mean shape: {:?}", mean_axis.shape());
-        info!("Normalize std shape: {:?}", std_axis.shape());
+        debug!("Normalize org shape: {:?}", fbank.shape());
+        debug!("Normalize mean shape: {:?}", mean_axis.shape());
+        debug!("Normalize std shape: {:?}", std_axis.shape());
         let fbank: Array2<f32> = (fbank - mean_axis) / (std_axis + 1.0e-6);
-        info!("Normalize standard fbank {:?}", fbank.slice(s![0, 0..15]));
+        debug!("Normalize standard fbank {:?}", fbank.slice(s![0, 0..15]));
         fbank
         }
 }

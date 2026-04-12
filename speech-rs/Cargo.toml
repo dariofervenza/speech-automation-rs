@@ -20,3 +20,6 @@ fern = "0.7"
 log = "0.4"
 humantime = "2.3"
 ndarray-stats = "0.6.0"
+cpal = { version="=0.17.3", features = ["asio"]}
+hound = "3.5.1"
+anyhow = "1.0.102"

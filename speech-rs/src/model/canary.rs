@@ -14,7 +14,7 @@ use std::path::Path;
 
 
 fn init_tokens(model_cfg: &Canary, audio: &AudioFile, tokenizer: &Tokenizer) -> ArrayD<i64> {
-    info!("Audio file: {}", audio.original_file);
+    debug!("Audio file: {}", audio.original_file);
     let mut vec_init: Vec<i64> = model_cfg.init_prompt.clone();
     let from_lang = tokenizer.tokenize(&audio.source_lang);
     let to_lang = tokenizer.tokenize(&audio.target_lang);
@@ -64,15 +64,12 @@ impl CanaryModel {
         T: PrimitiveTensorElementType
     {
         let tensor = Self::infered_tensor::<T>(out, key_name);
-        info!("{} shape is: {:?}", key_name, &tensor.0);
+        debug!("{} shape is: {:?}", key_name, &tensor.0);
     }
 
-    pub fn pipe(&mut self, input_vec: Vec<f32>, model_cfg: &Canary, audio: &AudioFile) {
-        for i in 0..15 {
-            info!("Pass no: {}", i);
-            let encoder_out = self.encode(input_vec.clone(), model_cfg);
-            self.decode(encoder_out, model_cfg, audio);
-        }
+    pub fn pipe(&mut self, input_vec: Vec<f32>, model_cfg: &Canary, audio: &AudioFile) -> String {
+        let encoder_out = self.encode(input_vec.clone(), model_cfg);
+        self.decode(encoder_out, model_cfg, audio)
     }
 
     fn encode(&mut self, mono_audio: Vec<f32>, model_cfg: &Canary) -> EncoderOutput {
@@ -107,7 +104,7 @@ impl CanaryModel {
         let keys: Vec<&str> = outputs.keys().collect();
         debug!("ENCODER OUTPUTS HAS LEN {:?}", outputs.len());
         debug!("ENCODER OUTPUTS HAS keys {:?}", keys);
-        // info!("ENCODER OUTPUTS HAS values {:?}", outputs.values());
+        // debug!("ENCODER OUTPUTS HAS values {:?}", outputs.values());
         // https://www.mdpi.com/2076-3417/14/24/11583
         // https://docs.rs/knf-rs/0.3.2/knf_rs/fn.compute_fbank.html
         // https://www.kaggle.com/code/ahmedabdoamin/preprocessing-speech-mfcc-vs-filter-banks
@@ -136,24 +133,24 @@ impl CanaryModel {
         DecoderOutput::new(outputs)
     }
 
-    fn decode(&mut self, encoder_out: EncoderOutput, model_cfg: &Canary, audio: &AudioFile) {
+    fn decode(&mut self, encoder_out: EncoderOutput, model_cfg: &Canary, audio: &AudioFile) -> String {
         let vocab_path = Path::new("src/config/specs/vocab.txt");
         let tokenizer = Tokenizer::load_vocab(&vocab_path);
         let n_steps = model_cfg.max_tokens;
         let prev_ids = init_tokens(model_cfg, audio, &tokenizer);
         let prev_ids_tensor = Self::array_to_tensor(prev_ids.clone());
-        info!("Input ids for init decoding: {:?}", prev_ids_tensor.try_extract_tensor::<i64>().unwrap());
+        debug!("Input ids for init decoding: {:?}", prev_ids_tensor.try_extract_tensor::<i64>().unwrap());
         let decoder_mems = init_decoder_mems(model_cfg);
         // TODO: use prev_ids as Ref in to_out_input to avodi expensive clone()
         let decoder_input = encoder_out.to_out_input(prev_ids_tensor, decoder_mems);
-        info!("Init pred");
+        debug!("Init pred");
         debug!("Decoder inputs are: {:?}", self.decoder.inputs);
         let mut predicted_tokens = Vec::<usize>::with_capacity(n_steps);
         let mut init_prediction = self._decode(decoder_input);
         init_prediction.store_pred(&mut predicted_tokens);
         for i in 1..=n_steps {
             if i % model_cfg.log_every_steps == 0 {
-                info!("Decoding cycle no. {}", i);
+                debug!("Decoding cycle no. {}", i);
             }
             let new_tokens = init_prediction.next_tokens();
             let last_token = new_tokens.last().expect("There arent new tokens");
@@ -182,7 +179,8 @@ impl CanaryModel {
             // use if let?
             final_str += &tokenizer.detokenize(&token);
         }
-        info!("Final string:\n{}", final_str)
+        info!("Final string:\n\n{}", final_str);
+        final_str
     }
 }
 

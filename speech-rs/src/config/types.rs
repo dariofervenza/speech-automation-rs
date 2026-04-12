@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ResampleConfig {
     pub chunk_size: usize,
     pub sub_chunks: usize,
@@ -9,7 +9,7 @@ pub struct ResampleConfig {
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct AudioFile {
     pub original_file: String,
     pub resampled_file: String,
@@ -21,21 +21,21 @@ pub struct AudioFile {
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct AudioWav {
     pub resample: ResampleConfig,
     pub testfiles: Vec<AudioFile>
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ModelPath {
     pub encoder: String,
     pub decoder: String,
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct InitDecoderMems {
     pub layers: usize,
     pub batch: usize,
@@ -43,7 +43,7 @@ pub struct InitDecoderMems {
     pub hidden_size: usize
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct FbankConfig {
     pub num_mel_features: usize,
     pub dither: f32,
@@ -59,7 +59,7 @@ pub struct FbankConfig {
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Canary {
     pub resampling_frequency: f32,
     pub max_tokens: usize,
@@ -71,13 +71,13 @@ pub struct Canary {
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Models {
     pub canary: Canary,
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Logging {
     pub level: String,
     pub logs_folder: String,
@@ -85,7 +85,7 @@ pub struct Logging {
 }
 
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct GlobalConfig {
     pub audio_wav: AudioWav,
     pub models: Models,

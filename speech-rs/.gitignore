@@ -5,3 +5,7 @@ onnxruntime*/**
 onnxruntime*
 *.wav
 *.deb
+logs/
+files/
+*.wav
+pulseaudio*/
